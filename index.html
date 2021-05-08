@@ -57,7 +57,7 @@
         elemPrice.innerHTML = formattedValue;
         elemLastUpdate.innerHTML = `Last updated ${(new Date()).toLocaleString('th-TH')}`;
 
-        setTimeout(pollDogePrice, 60000);
+        setTimeout(pollDogePrice, 5 * 60 * 1000);
       })
     }
 
