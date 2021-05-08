@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Changdao Watch</title>
+  <meta name="description" content="Changdao Watch">
+  <style>
+    body {
+      font-family: "Roboto", sans-serif;
+      font-size: 22pt;
+      text-align: center;
+    }
+
+    #price {
+      font-size: 42pt;
+      font-weight: bold;
+    }
+
+    #loading {
+      color: #ccc;
+    }
+
+    #last-update {
+      font-size: 14pt;
+      color: #ccc;
+      margin-top: 0;
+    }
+  </style>
+</head>
+
+<body>
+  <img src="changdao.jpg" />
+  <p>A pair of flip flops above costed 59 DOGE (99 THB) on March 30, 2021.</p>
+  <p>Those 59 DOGE are now:</p>
+  <p id="price"><span id="price-amount"><span id="loading">(loading)</span></span> THB</p>
+  <p id="last-update"></p>
+
+  <script>
+    const elemPrice = document.querySelector('#price-amount');
+    const elemLastUpdate = document.querySelector('#last-update');
+    const dogePerChangdao = 59;
+    const thbPerUsd = 31;
+
+    const pollDogePrice = function() {
+      fetch('https://sochain.com/api/v2/get_price/DOGE/USD')
+      .then(data => {return data.json()})
+      .then(parsed => {
+        const binancePriceData = parsed.data.prices.find(priceData => {
+          return priceData.exchange == 'binance';
+        });
+
+        const currentValue = binancePriceData.price * dogePerChangdao * thbPerUsd;
+        const formattedValue = Math.round(currentValue).toLocaleString();
+
+        elemPrice.innerHTML = formattedValue;
+        elemLastUpdate.innerHTML = `Last updated ${(new Date()).toLocaleString('th-TH')}`;
+
+        setTimeout(pollDogePrice, 60000);
+      })
+    }
+
+    pollDogePrice();
+  </script>
+</body>
+</html>
