@@ -41,6 +41,8 @@
   <p>but now we are at:</p>
   <p id="price"><span id="bit-amount"><span id="loading">(loading)</span></span> BitsKUB</p>
   <p id="price"><span id="bytes-amount"><span id="loading">(loading)</span></span> Byte(s)KUB</p>
+  <p id="price"><span id="kb-amount"><span id="loading">(loading)</span></span> KBKUB</p>
+
   <p id="price"><span id="qubit-amount"><span id="loading">(loading)</span></span> Qubit(s)KUB</p>
 
   <p id="last-update"></p>
@@ -48,6 +50,7 @@
   <script>
     const elembit = document.querySelector('#bit-amount');
     const elembytes = document.querySelector('#bytes-amount');
+    const elemqukb = document.querySelector('#kb-amount');
     const elemqubit = document.querySelector('#qubit-amount');
 
     const elemLastUpdate = document.querySelector('#last-update');
@@ -67,14 +70,17 @@
 
           const bitval = Math.round(kubPrice).toLocaleString();
           const bytes = kubPrice / 8;
-          const bytesval = Math.round(bytes).toLocaleString();
+          const bytesval = bytes.toLocaleString();
+          const kbbit = kubPrice / 8192;
+          const kbbitval = kbbit.toLocaleString();
           const qubit = Math.log2(kubPrice)
-          const qubitval = Math.round(qubit).toLocaleString();
+          const qubitval = qubit.toLocaleString();
 
 
           elembit.innerHTML = bitval;
           elembytes.innerHTML = bytesval;
           elemqubit.innerHTML = qubitval;
+          elemqukb.innerHTML = kbbitval;
 
           elemLastUpdate.innerHTML = `Last updated ${(new Date()).toLocaleString('th-TH')}`;
 
