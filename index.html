@@ -1,6 +1,9 @@
 <!doctype html>
 <html lang="en">
+
 <head>
+
+
   <meta charset="utf-8">
   <title>Changdao Watch</title>
   <meta name="description" content="Changdao Watch">
@@ -31,47 +34,64 @@
 </head>
 
 <body>
-  <img src="changdao.jpg" style="width: 100%; max-width: 640px;" />
-  <p>On 30 March 2021, a pair of flip flops above cost 59 DOGE (99 THB).</p>
-  <p>Those 59 DOGE are now:</p>
-  <p id="price"><span id="price-amount"><span id="loading">(loading)</span></span> THB</p>
+  <img src="logo.png" style="width: 100%; max-width: 320px;" />
+  <p>On 20 May 2021, BITKUB coin ICO at the price of 1$</p>
+  <p>but now we are at:</p>
+  <p id="price"><span id="bit-amount"><span id="loading">(loading)</span></span> BITKUB</p>
+  <p id="price"><span id="bytes-amount"><span id="loading">(loading)</span></span> Byte(s)KUB</p>
+  <p id="price"><span id="qubit-amount"><span id="loading">(loading)</span></span> QubitKUB</p>
+
   <p id="last-update"></p>
 
   <script>
-    const elemPrice = document.querySelector('#price-amount');
+    const elembit = document.querySelector('#bit-amount');
+    const elembytes = document.querySelector('#bytes-amount');
+    const elemqubit = document.querySelector('#qubit-amount');
+
     const elemLastUpdate = document.querySelector('#last-update');
     const dogePerChangdao = 59;
     const thbPerUsd = 31;
 
-    const pollDogePrice = function() {
-      fetch('https://sochain.com/api/v2/get_price/DOGE/USD')
-      .then(data => {return data.json()})
-      .then(parsed => {
-        const binancePriceData = parsed.data.prices.find(priceData => {
-          return priceData.exchange == 'binance';
-        });
 
-        const currentValue = binancePriceData.price * dogePerChangdao * thbPerUsd;
-        const formattedValue = Math.round(currentValue).toLocaleString();
 
-        elemPrice.innerHTML = formattedValue;
-        elemLastUpdate.innerHTML = `Last updated ${(new Date()).toLocaleString('th-TH')}`;
+    const pollDogePrice = function () {
+      fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitkub-coin&vs_currencies=usd')
+        .then(data => { return data.json() })
+        .then(parsed => {
+          console.log(parsed)
+          console.log(parsed['bitkub-coin']['usd'])
+          const kubPrice = parsed['bitkub-coin']['usd'];
 
-        setTimeout(pollDogePrice, 5 * 60 * 1000);
-      })
+
+          const bitval = Math.round(kubPrice).toLocaleString();
+          const bytes = kubPrice / 8;
+          const bytesval = Math.round(bytes).toLocaleString();
+          const qubit = Math.log2(kubPrice)
+          const qubitval = Math.round(qubit).toLocaleString();
+
+
+          elembit.innerHTML = bitval;
+          elembytes.innerHTML = bytesval;
+          elemqubit.innerHTML = qubitval;
+
+          elemLastUpdate.innerHTML = `Last updated ${(new Date()).toLocaleString('th-TH')}`;
+
+          setTimeout(pollDogePrice, 5 * 60 * 1000);
+        })
     }
 
     pollDogePrice();
   </script>
 
   <!-- Global site tag (gtag.js) - Google Analytics -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-QX8CCTSHVY"></script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z63NKP14RT"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
+    function gtag() { dataLayer.push(arguments); }
     gtag('js', new Date());
 
-    gtag('config', 'G-QX8CCTSHVY');
+    gtag('config', 'G-Z63NKP14RT');
   </script>
 </body>
+
 </html>
